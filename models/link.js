@@ -1,9 +1,13 @@
-import { Timestamp } from "mongodb";
+import mongoose from "mongoose";
+import { unique } from "next/dist/build/utils";
 
-const LinkSchema = new Mongoose.Schema({
+const LinkSchema = new mongoose.Schema({
+    handle:{type: String, unique: true},
     title: String,
     url: String,
 
-    clicks: {type: Number, default: 0},
+     clicks: {type: Number, default: 0},
 
-}, {Timestamp: true});
+
+}, {timestamps: true});
+

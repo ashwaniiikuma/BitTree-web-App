@@ -44,7 +44,9 @@ export async function POST(request) {
         links: body.links.map(l=>({
             ...l,
             clicks: 0
-        }))
+        })),
+        theme: body.theme || 'bg-white text-black',
+        font: body.font || 'font-sans'
     
 })
 

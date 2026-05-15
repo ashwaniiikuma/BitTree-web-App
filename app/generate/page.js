@@ -5,6 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { button, select } from "framer-motion/client";
+import { CldUploadWidget } from "next-cloudinary";
+import { div, text } from "framer-motion/m";
 
 const Generate = () => {
   const {data: session} = useSession();
@@ -15,6 +18,11 @@ const Generate = () => {
   const [handle, sethandle] = useState(searchParams.get("handle") || "");
   const [pic, setpic] = useState("");
   const [desc, setdesc] = useState("")
+  const [bg, setBg] = useState("bg-white");
+  const [btnstyle, setBtnstyle] = useState("rounded-full");
+  const [textcolor, setTextcolor] = useState("text-black");
+
+ 
 
    const router = useRouter();
 
@@ -62,6 +70,7 @@ const Generate = () => {
         
         
         
+        
       }),
     });
     
@@ -99,6 +108,7 @@ const Generate = () => {
   };
 
 return (
+  <div className={`min-h-screen ${bg} ${textcolor} transition-all duration-500 pb-20 `}>
   <div className="bg-[#f5faf5] min-h-screen grid grid-cols-1 md:grid-cols-2">
     {/* LEFT SIDE: EDITOR */}
     <div className="flex justify-center items-center flex-col p-6 pt-32">
@@ -153,6 +163,42 @@ return (
           </button>
         </div>
 
+        <div className="item">
+          <h2 className="font-semibold items-center justify-center text-xl md:text-2xl">Choose a Profile picture and Description</h2>
+            <div className="mx-4 py-3 flex flex-col items-center justify-center gap-5">
+              <CldUploadWidget
+              uploadPreset="bittree_preset"
+              onSuccess={(result) => {
+                if (result.event === "success") {
+                  setpic(result.info.secure_url);
+                }
+              }}
+              >
+                {({open}) =>{
+                  return (
+                 <button 
+              type="button" 
+              onClick={() => open()}
+              className="relative p-[3px] inline-flex items-center justify-center overflow-hidden rounded-full group hover:scale-105 transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+          >
+              {/* Ye hai wo "Ghumne wali Line" ka effect (Pure Tailwind) */}
+              <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#4285f4_0%,#9b72cb_50%,#d96570_100%)]" />
+
+              {/* Button ka asli background jo line ko cover karke sirf border banayega */}
+              <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-900 px-3 py-3 text-sm font-bold text-white backdrop-blur-3xl gap-2">
+                  <span className="relative flex items-center gap-2">
+                      <span className="animate-pulse"></span> 
+                      Upload pic
+                  </span>
+              </span>
+          </button>
+                  );
+                }}
+
+              </CldUploadWidget>
+            </div>
+        </div>
+
         {/* STEP 3: PICTURE & DESC */}
         <div className="flex flex-col gap-3">
           <h2 className="font-bold text-lg text-gray-800">Step 3: Picture & Bio</h2>
@@ -175,6 +221,7 @@ return (
           </div>
         </div>
 
+      
         {/* PUBLISH BUTTON */}
         <button
           disabled={pic == "" || handle == "" || links[0].link == "" || links[0].linktext == ""}
@@ -197,6 +244,7 @@ return (
     </div>
 
     <ToastContainer />
+  </div>
   </div>
 );
 

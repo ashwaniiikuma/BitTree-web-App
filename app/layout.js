@@ -17,6 +17,12 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "BitTree - Your favorite link sharing site",
   description: "We brought a revolution in link sharing",
+  icons:{
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
+  
 };
 
 export default function RootLayout({ children }) {
